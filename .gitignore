@@ -8,3 +8,4 @@ experiment_results/**/*.log
 experiment_results/**/outputs/
 experiment_results/**/checkpoints/*.pth
 data/KITTIDataset
+.venv
