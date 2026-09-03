@@ -1,0 +1,10 @@
+data/
+**/__pycache__/
+*.pyc
+experiment_results/**/*.csv
+experiment_results/**/*.json
+experiment_results/**/*.yaml
+experiment_results/**/*.log
+experiment_results/**/outputs/
+experiment_results/**/checkpoints/*.pth
+data/KITTIDataset

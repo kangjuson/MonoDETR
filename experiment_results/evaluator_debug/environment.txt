@@ -1,0 +1,31 @@
+Environment executable:
+C:\Users\microsoft\Desktop\MonoDETR-main\MonoDETR-main\.venv\Scripts\python.exe
+
+Python:
+Python 3.13.14
+
+PyTorch:
+torch=2.7.1+cu126
+torch CUDA runtime=12.6
+torch.cuda.is_available=True
+
+Numba:
+numba=0.66.0
+numba-cuda=not installed (CUDA target is provided by numba)
+numba.cuda.is_available=True
+
+GPU / driver:
+NVIDIA GeForce RTX 4060 Ti 16 GB
+NVIDIA driver=591.44
+nvidia-smi maximum supported CUDA=13.1
+compute capability=8.9
+driver model=WDDM
+
+CUDA toolkit:
+nvcc release=12.8
+nvcc build=12.8.61
+
+Repository installation guidance:
+Python=3.8
+PyTorch=1.9.0+cu111
+Numba is listed without a version constraint.

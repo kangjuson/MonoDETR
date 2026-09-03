@@ -1,0 +1,6 @@
+Config snapshot diff (E0_baseline vs E1_soft_ncf)
+============================================================
+model.pseudo_depth_mode:
+  E0 = center
+  E1 = soft_ncf
+
