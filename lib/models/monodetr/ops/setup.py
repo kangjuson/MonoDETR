@@ -47,6 +47,12 @@ def get_extensions():
             "-gencode=arch=compute_61,code=sm_61",
             "-gencode=arch=compute_70,code=sm_70",
             "-gencode=arch=compute_75,code=sm_75",
+            # Added for the current server's GPUs (NVIDIA RTX A5000, compute
+            # capability 8.6) — the original list only covered up to Turing
+            # (sm_75) and produced no kernel image for Ampere devices.
+            "-gencode=arch=compute_80,code=sm_80",
+            "-gencode=arch=compute_86,code=sm_86",
+            "-gencode=arch=compute_86,code=compute_86",
 ]
     else:
         raise NotImplementedError('Cuda is not availabel')

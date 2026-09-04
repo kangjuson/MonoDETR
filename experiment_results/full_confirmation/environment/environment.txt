@@ -1,0 +1,13 @@
+torch: 2.0.1+cu118
+torch.version.cuda: 11.8
+cuda available: True
+gpu count: 4
+  gpu0: NVIDIA RTX A5000 (8, 6)
+  gpu1: NVIDIA RTX A5000 (8, 6)
+  gpu2: NVIDIA RTX A5000 (8, 6)
+  gpu3: NVIDIA RTX A5000 (8, 6)
+
+Python executable: /usr/bin/python3.8
+Python: 3.8.10 (default, Mar 18 2025, 20:04:55) 
+[GCC 9.4.0]
+OS: Linux sangyun-ESC4000-G4 5.15.0-139-generic #149~20.04.1-Ubuntu SMP Wed Apr 16 08:29:56 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
