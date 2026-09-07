@@ -7,5 +7,6 @@ experiment_results/**/*.yaml
 experiment_results/**/*.log
 experiment_results/**/outputs/
 experiment_results/**/checkpoints/*.pth
-data/KITTIDataset
+experiment_results/**/*.png
+experiment_results/**/pre_run_summary.txt
 .venv
