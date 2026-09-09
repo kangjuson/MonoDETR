@@ -1,4 +1,5 @@
 data/
+/data
 **/__pycache__/
 *.pyc
 experiment_results/**/*.csv
@@ -9,4 +10,16 @@ experiment_results/**/outputs/
 experiment_results/**/checkpoints/*.pth
 experiment_results/**/*.png
 experiment_results/**/pre_run_summary.txt
+experiment_results/**/*.out
+experiment_results/**/*.sh
 .venv
+
+# Compiled/build artifacts for the custom CUDA extension - environment-
+# specific (tied to this machine's Python/CUDA/PyTorch build), large, and
+# trivially regenerated via `python lib/models/monodetr/ops/setup.py build
+# install`. Never worth committing.
+lib/models/monodetr/ops/build/
+lib/models/monodetr/ops/dist/
+lib/models/monodetr/ops/*.egg-info/
+*.so
+*.o

@@ -43,6 +43,8 @@ EXPERIMENTS = {
     'screening_center_extent': ('center_extent', 'screening/E2_center_extent'),
     'stage2_baseline': ('center', 'stage2_confirmation/E0_baseline'),
     'stage2_soft_ncf': ('soft_ncf', 'stage2_confirmation/E1_soft_ncf'),
+    'full_baseline': ('center', 'full_confirmation/E0_center_seed444'),
+    'full_soft_ncf': ('soft_ncf', 'full_confirmation/E1_soft_ncf_seed444'),
 }
 KITTI_AP_UNIT = 'AP points (0-100)'
 SCREENING_EPOCHS = 25
@@ -51,7 +53,10 @@ SCREENING_VALIDATION_INTERVAL = 5
 STAGE2_EPOCHS = 40
 STAGE2_TRAIN_SPLIT = 'train_confirmation_50'
 STAGE2_VALIDATION_INTERVAL = 5
-STAGE_LABELS = {'screening_': 'Stage 1 Screening', 'stage2_': 'Stage 2 Confirmation'}
+FULL_EPOCHS = 195
+FULL_MILESTONES = [125, 165]
+STAGE_LABELS = {'screening_': 'Stage 1 Screening', 'stage2_': 'Stage 2 Confirmation',
+                'full_': 'Full KITTI Confirmation'}
 SPLIT_STATS_PATHS = {
     SCREENING_TRAIN_SPLIT: ROOT / 'experiment_results' / 'screening' / 'subset' / 'subset_statistics.json',
     STAGE2_TRAIN_SPLIT: ROOT / 'experiment_results' / 'stage2_confirmation' / 'subset' / 'subset_statistics.json',
@@ -531,6 +536,14 @@ def configure(args):
     mode, directory = EXPERIMENTS[args.experiment]
     cfg['model']['pseudo_depth_mode'] = mode
     cfg['trainer']['save_frequency'] = 5
+    seed_override = getattr(args, 'seed', None)
+    if seed_override is not None:
+        # Explicit, per-invocation override only - the config file's own
+        # default random_seed (444) is left untouched for anyone who omits
+        # --seed, so existing seed444 reproducibility is unaffected.
+        cfg['random_seed'] = int(seed_override)
+        if 'seed444' in directory:
+            directory = directory.replace('seed444', f'seed{seed_override}')
     if args.experiment == 'budget_search':
         cfg['trainer']['max_epoch'] = 195
     elif args.experiment.startswith('screening_'):
@@ -553,6 +566,13 @@ def configure(args):
         cfg['lr_scheduler']['decay_list'] = [
             math.floor(epochs * 125 / 195), math.floor(epochs * 165 / 195)]
         cfg['split_seed'] = load_split_seed(STAGE2_TRAIN_SPLIT)
+    elif args.experiment.startswith('full_'):
+        # Full-data confirmation: original MonoDETR schedule, uncompressed.
+        # Uses the config's own train/val split (full KITTI train=3712,
+        # val=3769) and the canonical 125/165 LR milestones - no subset,
+        # no early stopping, no adaptive budget search.
+        cfg['trainer']['max_epoch'] = FULL_EPOCHS
+        cfg['lr_scheduler']['decay_list'] = list(FULL_MILESTONES)
     else:
         if not args.budget_json:
             raise ValueError('--budget-json is required for Phase 1 experiments')
@@ -574,6 +594,9 @@ def main():
     parser.add_argument('--results-root', default='experiment_results')
     parser.add_argument('--checkpoint', help='checkpoint for evaluator_smoke')
     parser.add_argument('--resume', help='resume a Phase 0 latest checkpoint')
+    parser.add_argument('--seed', type=int,
+                        help='override cfg random_seed for this run only '
+                             '(config default, e.g. 444, is unaffected when omitted)')
     args = parser.parse_args()
     if args.experiment == 'evaluator_smoke':
         if not args.checkpoint:
